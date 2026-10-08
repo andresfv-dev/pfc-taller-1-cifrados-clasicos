@@ -93,5 +93,27 @@ class CifradosClasicos {
    * Vigenère: cada letra se corre según la letra de la clave que le toca. Lo
    * que no es letra minúscula se copia y no consume clave.
    */
-  def vigenere(m: Mensaje, clave: Clave): Mensaje = ???
+  def vigenere(m: Mensaje, clave: Clave): Mensaje = {
+    /*
+      Función auxiliar que recorre el mensaje letra por letra, recibe:
+        resto: lo que falta por cifrar
+        i: cuantas letras de la clave se han usado hasta ahora. Para saber cuál toca
+     */
+    def cifrar(resto: Mensaje, i: Int): Mensaje = {
+      if (resto.isEmpty) ""  //Nada q cifrar@
+      else{
+        val c = resto.head
+        if (esMinuscula(c)){
+          val correr = clave(i % clave.length) - primera  //Cantidad posiciones que corre según la letra actual de la clave
+          val nueva = ((c - primera + correr) % letras + primera).toChar
+          nueva + cifrar(resto.tail, i + 1)
+        }
+        else{
+          c + cifrar(resto.tail, i)
+        }
+      }
+    }
+
+    if (clave.isEmpty) m else cifrar(m, 0)
+  }
 }
