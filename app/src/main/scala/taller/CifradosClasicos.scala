@@ -65,7 +65,34 @@ class CifradosClasicos {
    * Cuenta las letras minúsculas del mensaje, de mayor a menor frecuencia y,
    * en empate, en orden alfabético. El recorrido es recursivo de cola.
    */
-  def frecuencias(m: Mensaje): Frecuencias = ???
+  def frecuencias(m: Mensaje): Frecuencias = {
+
+    // le suma 1 a la letra en la lista; si la letra no esta, la agrega con 1
+    def sumarUno(letra: Char, lista: Frecuencias): Frecuencias = {
+      if (lista.isEmpty) {List((letra, 1))}
+      else if (lista.head._1 == letra) {(letra, lista.head._2 + 1) :: lista.tail}
+      else {lista.head :: sumarUno(letra, lista.tail)}
+    }
+
+    // recorre el mensaje letra por letra y va guardando el conteo en acc
+    @tailrec
+    def contar(resto: Mensaje, acc: Frecuencias): Frecuencias = {
+      if (resto.isEmpty) {acc}
+      else {
+        val c = resto.head
+        //solo se cuentan las letras minusculas
+        val nuevoAcc = if (esMinuscula(c)) {
+          sumarUno(c, acc)
+        } else {// los demas caracteres no se cuentan
+          acc
+        }
+        contar(resto.tail, nuevoAcc)
+      }
+    }
+
+    // ordena de mayor a menor frecuencia y, si empatan, en orden alfabetico
+    contar(m, List()).sortBy(par => (-par._2, par._1))
+  }
 
   // Punto 4 -------------------------------------------------------------------
 
@@ -73,9 +100,21 @@ class CifradosClasicos {
    * Supone que la letra más frecuente del mensaje cifrado es la 'e' del
    * original y devuelve la distancia entre las dos. Sin letras, cero.
    */
-  def desplazamientoProbable(m: Mensaje): Int = ???
+  def desplazamientoProbable(m: Mensaje): Int = {
+    val lista = frecuencias(m)
+    if (lista.isEmpty) {0}
+    else {
+      val masFrecuente = lista.head._1
+      // distancia de 'e' a la letra mas frecuente, siempre entre 0 y 25
+      ((masFrecuente.toInt - 'e'.toInt) % letras + letras) % letras
+    }
+  }
 
-  def romperCesar(m: Mensaje): Mensaje = ???
+  /** Descifra corriendo el mensaje hacia atrás el desplazamiento estimado. */
+  def romperCesar(m: Mensaje): Mensaje = {
+    val k = desplazamientoProbable(m)
+    cesar(m, -k)
+  }
 
   // Punto 5 -------------------------------------------------------------------
 

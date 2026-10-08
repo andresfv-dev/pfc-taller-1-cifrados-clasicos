@@ -51,7 +51,7 @@ class CifradosClasicosTest extends AnyFunSuite {
     val largo = "abcdefghij" * 20000
     assert(cesarCola(largo, 1).length == largo.length)
   }
-  /**
+
   // Punto 3 -------------------------------------------------------------------
 
   test("frecuencias: casa") {
@@ -109,7 +109,7 @@ class CifradosClasicosTest extends AnyFunSuite {
     val original = "cada casa amarilla"
     assert(romperCesar(cesar(original, 7)) != original)
   }
-
+  /**
   // Punto 5 -------------------------------------------------------------------
 
   test("combinaciones: con longitud 0 hay un mensaje, el vacío") {
