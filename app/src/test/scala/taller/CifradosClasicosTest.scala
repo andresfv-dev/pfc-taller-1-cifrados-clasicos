@@ -109,7 +109,7 @@ class CifradosClasicosTest extends AnyFunSuite {
     val original = "cada casa amarilla"
     assert(romperCesar(cesar(original, 7)) != original)
   }
-  /**
+
   // Punto 5 -------------------------------------------------------------------
 
   test("combinaciones: con longitud 0 hay un mensaje, el vacío") {
@@ -132,6 +132,27 @@ class CifradosClasicosTest extends AnyFunSuite {
     assert(combinaciones(5, 4) == BigInt(3) * combinaciones(4, 4))
   }
 
+  //Tests agregados de combinaciones
+  test("Combinaciones: 2 letras sobre 26 dan 650"){
+    assert(combinaciones(2,26) == BigInt(650))
+  }
+
+  test("Combinaciones: 4 letras sobre 3 dan 24"){
+    assert(combinaciones(4,3) == BigInt(24))
+  }
+
+  test("Combinaciones: 1 letra sobre largo 1 da 1"){
+    assert(combinaciones(1,1) == BigInt(1))
+  }
+
+  test("Combinaciones: con 1 letra no se puede formar largo 3"){
+    assert(combinaciones(3,1) == BigInt(0))
+  }
+
+  test("Combinaciones: largo 10 sobre 26 no cabe en un Int"){
+    assert(combinaciones(10,26) == BigInt("99182128906250"))
+  }
+
   test("vigenere: ataque con la clave sol") {
     assert(vigenere("ataque", "sol") == "shliip")
   }
@@ -152,5 +173,5 @@ class CifradosClasicosTest extends AnyFunSuite {
   test("vigenere: con una clave de una sola letra es un César") {
     assert(vigenere("hola mundo", "d") == cesar("hola mundo", 3))
   }
-**/
+
 }
