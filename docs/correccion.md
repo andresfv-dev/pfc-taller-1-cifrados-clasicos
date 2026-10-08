@@ -277,3 +277,64 @@ s_0 = (a_1, \text{List}(a_2, \ldots, a_k)) \implies a_1 = f(\text{List}(a_1))
 $k$ iteraciones, $l = \text{List}()$.
 
 Esto implica que $P_f(L) == \text{maxAux}(L.\text{head}, L.\text{tail}) == f(L)$
+
+
+## Corrección de `combinaciones`
+
+```scala
+def combinaciones(n: Int, a: Int): BigInt =
+  if (n == 0) BigInt(1)
+  else if (n == 1) BigInt(a)
+  else BigInt(a - 1) * combinaciones(n - 1, a)
+```
+
+### Qué debe calcular
+
+Queremos contar las palabras de largo $n$ que se pueden formar con $a$ letras
+sin que haya dos letras iguales seguidas. La primera letra puede ser cualquiera
+($a$ opciones) y cada letra siguiente puede ser cualquiera menos la anterior
+($a - 1$ opciones). Por eso:
+
+```math
+f(n, a) = \begin{cases} 1 & \text{si } n = 0 \\ a \cdot (a-1)^{n-1} & \text{si } n \geq 1 \end{cases}
+```
+
+Hay que mostrar que $combinaciones(n, a) == f(n, a)$ para todo $n \geq 0$.
+
+### Casos base
+
+**$n = 0$:** el programa entra al primer `if` y devuelve $1$. Solo existe una
+palabra de largo cero, la vacía, así que $f(0, a) = 1$. Coinciden.
+
+**$n = 1$:** el programa entra al segundo `if` y devuelve $a$. Con una sola
+letra cualquiera sirve, y $f(1, a) = a \cdot (a-1)^0 = a$. Coinciden.
+
+### Caso de inducción
+
+Suponemos que el programa funciona para un $k \geq 1$, es decir:
+
+```math
+combinaciones(k, a) = a \cdot (a-1)^{k-1} \quad \text{(hipótesis de inducción)}
+```
+
+Para $n = k + 1$ el programa no entra a ningún caso base, así que calcula:
+
+```math
+combinaciones(k+1, a) \rightarrow (a-1) \cdot combinaciones(k, a)
+```
+
+Usando la hipótesis:
+
+```math
+(a-1) \cdot a \cdot (a-1)^{k-1} = a \cdot (a-1)^{k} = f(k+1, a)
+```
+
+En palabras: las palabras de largo $k+1$ son las de largo $k$ con una letra más
+al final, y esa letra tiene $a - 1$ opciones porque no puede repetir la
+anterior.
+
+### Conclusión
+
+Los casos base se cumplen y, si el programa funciona para $k$, también funciona
+para $k + 1$. Por inducción, $combinaciones(n, a) == f(n, a)$ para todo
+$n \geq 0$.
