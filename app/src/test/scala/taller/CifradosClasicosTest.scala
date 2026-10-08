@@ -51,7 +51,7 @@ class CifradosClasicosTest extends AnyFunSuite {
     val largo = "abcdefghij" * 20000
     assert(cesarCola(largo, 1).length == largo.length)
   }
-  /**
+
   // Punto 3 -------------------------------------------------------------------
 
   test("frecuencias: casa") {
@@ -152,5 +152,5 @@ class CifradosClasicosTest extends AnyFunSuite {
   test("vigenere: con una clave de una sola letra es un César") {
     assert(vigenere("hola mundo", "d") == cesar("hola mundo", 3))
   }
-**/
+
 }
