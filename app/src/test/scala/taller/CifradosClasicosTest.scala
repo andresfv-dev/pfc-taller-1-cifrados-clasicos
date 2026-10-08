@@ -174,4 +174,25 @@ class CifradosClasicosTest extends AnyFunSuite {
     assert(vigenere("hola mundo", "d") == cesar("hola mundo", 3))
   }
 
+  //Tests agregados de vigenere
+  test("Vigenere: zzz con clave ab da la vuelta al alfabeto"){
+    assert(vigenere("zzz", "ab") == "zaz")
+  }
+
+  test("Vigenere: la mayúscula no se cifra ni gasta clave"){
+    assert(vigenere("Hola", "b") == "Hpmb")
+  }
+
+  test("Vigenere: los espacios no gastan letras de la clave"){
+    assert(vigenere("a b c", "bc") == "b d d")
+  }
+
+  test("Vigenere: una clave de puras a no cambia el mensaje"){
+    assert(vigenere("hola", "aaa") == "hola")
+  }
+
+  test("Vigenere: el mensaje vacío sale vacío"){
+    assert(vigenere("", "sol") == "")
+  }
+
 }
