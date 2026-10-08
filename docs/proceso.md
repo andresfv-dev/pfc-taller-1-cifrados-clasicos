@@ -149,7 +149,7 @@ cesar("a", 3)
 * m no está vacio.
 * c= `a`
 * c es letra minuscula.
-* ((97- 97 + 3) % 26 + 26) % 26 + 97 = 3 + 97 = 118 ('d').
+* ((97- 97 + 3) % 26 + 26) % 26 + 97 = 3 + 97 = 100 ('d').
 * 'd' + cesar(" ", 3), se queda esperando...
 * 'f' + 'd'+ 'v'('d'+ cesar(" ", 3)), se acomula en la pila.
 
@@ -182,7 +182,7 @@ cesar(" ", 3)
 
 El resultado de cesar("casa", 3) es 'fdvd'
 
-## Diagrama de llamados de pila con recursión de cola
+## Diagrama de llamados de pila con recursión lineal
 
 ```mermaid
 sequenceDiagram
@@ -266,7 +266,7 @@ En cada llamada:
 Ejemplo:
 ### Paso 1: Llamado inicial
 ```Scala
-cesarCola("hola", 3) // se asigna "" por defecto
+cesarCola("casa", 3) // se asigna "" por defecto
 ```
 Tambien podria ser  `cesarCola("casa", 3, "")`
 
