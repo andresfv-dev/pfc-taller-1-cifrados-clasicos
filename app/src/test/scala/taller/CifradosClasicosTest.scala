@@ -35,6 +35,36 @@ class CifradosClasicosTest extends AnyFunSuite {
     assert(cesar(cesar("un mensaje cualquiera", 11), -11) == "un mensaje cualquiera")
   }
 
+  // Pruebas  propias cesar lineal-------------------------------------------------------------------
+
+  test("cesar propia: harry potter con 3") {
+    assert(cesar("harry potter", 3) == "kduub srwwhu")
+  }
+
+  test("cesar propia: caliz de fuego con 1, la z da la vuelta a la a") {
+    assert(cesar("caliz de fuego", 1) == "dbmja ef gvfhp")
+  }
+
+  test("cesar propia: la C mayúscula de Cedric no se cifra") {
+    assert(cesar("Cedric", 2) == "Cgftke")
+  }
+
+  test("cesar propia: el número y la exclamación del torneo pasan sin cambio") {
+    assert(cesar("torneo de los 3 magos!", 4) == "xsvris hi psw 3 qeksw!")
+  }
+
+  test("cesar propia: voldemort con desplazamiento negativo") {
+    assert(cesar("voldemort", -1) == "unkcdlnqs")
+  }
+
+  test("cesar propia: con 26 dumbledore no cambia") {
+    assert(cesar("dumbledore", 26) == "dumbledore")
+  }
+
+  test("cesar propia: mi hijo, mi muchacho con 13 dos veces vuelve al original") {
+    assert(cesar(cesar("mi hijo, mi muchacho", 13), 13) == "mi hijo, mi muchacho")
+  }
+
   // Punto 2 -------------------------------------------------------------------
 
   test("cesarCola: casa con 3 da fdvd") { assert(cesarCola("casa", 3) == "fdvd") }
@@ -51,7 +81,46 @@ class CifradosClasicosTest extends AnyFunSuite {
     val largo = "abcdefghij" * 20000
     assert(cesarCola(largo, 1).length == largo.length)
   }
-  /**
+  // Pruebas  propias cesar cola-------------------------------------------------------------------
+
+  test("cesarCola propia: hermione con 2") {
+    assert(cesarCola("hermione", 2) == "jgtokqpg")
+  }
+
+  test("cesarCola propia: la H mayúscula de Hogwarts no se cifra") {
+    assert(cesarCola("Hogwarts", 1) == "Hphxbsut")
+  }
+
+  test("cesarCola propia: dragon con -29 es lo mismo que con -3") {
+    assert(cesarCola("dragon", -29) == "aoxdlk")
+  }
+
+  test("cesarCola propia: con -26 moody no cambia") {
+    assert(cesarCola("moody", -26) == "moody")
+  }
+
+  test("cesarCola propia: el mensaje vacío del pensadero sale vacío") {
+    assert(cesarCola("", 7) == "")
+  }
+
+  test("cesarCola propia: mi hijo, mi muchacho se cifra y descifra") {
+    val frase = "mi hijo, mi muchacho"
+    assert(cesarCola(cesarCola(frase, 9), -9) == frase)
+  }
+
+  test("cesarCola propia: da lo mismo que cesar en frases del libro") {
+    val casos = List(("el caliz de fuego", 5), ("krum y fleur", -7),
+                     ("la tercera prueba: el laberinto", 20), ("cedric diggory", 52))
+    assert(casos.forall { case (m, k) => cesarCola(m, k) == cesar(m, k) })
+  }
+
+  test("cesarCola propia: un mensaje largo del cáliz no desborda la pila") {
+    val largo = "el caliz de fuego " * 10000
+    assert(cesarCola(cesarCola(largo, 4), -4) == largo)
+  }
+
+
+
   // Punto 3 -------------------------------------------------------------------
 
   test("frecuencias: casa") {
@@ -132,6 +201,27 @@ class CifradosClasicosTest extends AnyFunSuite {
     assert(combinaciones(5, 4) == BigInt(3) * combinaciones(4, 4))
   }
 
+  //Tests agregados de combinaciones
+  test("Combinaciones: 2 letras sobre 26 dan 650"){
+    assert(combinaciones(2,26) == BigInt(650))
+  }
+
+  test("Combinaciones: 4 letras sobre 3 dan 24"){
+    assert(combinaciones(4,3) == BigInt(24))
+  }
+
+  test("Combinaciones: 1 letra sobre largo 1 da 1"){
+    assert(combinaciones(1,1) == BigInt(1))
+  }
+
+  test("Combinaciones: con 1 letra no se puede formar largo 3"){
+    assert(combinaciones(3,1) == BigInt(0))
+  }
+
+  test("Combinaciones: largo 10 sobre 26 no cabe en un Int"){
+    assert(combinaciones(10,26) == BigInt("99182128906250"))
+  }
+
   test("vigenere: ataque con la clave sol") {
     assert(vigenere("ataque", "sol") == "shliip")
   }
@@ -152,5 +242,26 @@ class CifradosClasicosTest extends AnyFunSuite {
   test("vigenere: con una clave de una sola letra es un César") {
     assert(vigenere("hola mundo", "d") == cesar("hola mundo", 3))
   }
-**/
+
+  //Tests agregados de vigenere
+  test("Vigenere: zzz con clave ab da la vuelta al alfabeto"){
+    assert(vigenere("zzz", "ab") == "zaz")
+  }
+
+  test("Vigenere: la mayúscula no se cifra ni gasta clave"){
+    assert(vigenere("Hola", "b") == "Hpmb")
+  }
+
+  test("Vigenere: los espacios no gastan letras de la clave"){
+    assert(vigenere("a b c", "bc") == "b d d")
+  }
+
+  test("Vigenere: una clave de puras a no cambia el mensaje"){
+    assert(vigenere("hola", "aaa") == "hola")
+  }
+
+  test("Vigenere: el mensaje vacío sale vacío"){
+    assert(vigenere("", "sol") == "")
+  }
+
 }
